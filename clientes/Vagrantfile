@@ -1,0 +1,67 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.define "client1" do |client1|
+    client1.vm.box = "generic/centos8"
+    client1.vm.hostname = "Client1"
+    client1.vm.network :private_network, ip: "192.168.10.60"
+    client1.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--name", "client1"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+  end
+  $COMMANDS = <<-'BLOCK'
+  sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+  sudo systemctl restart sshd;
+  sudo yum update;
+  sudo yum upgrade;
+  echo "root:vagrant" | sudo chpasswd
+  BLOCK
+  client1.vm.provision "shell", inline: $COMMANDS
+  end
+
+
+  config.vm.define "client2" do |client2|
+    client2.vm.box = "generic/centos8"
+    client2.vm.hostname = "Client2"
+    client2.vm.network :private_network, ip: "192.168.10.61"
+    client2.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--name", "client2"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+  end
+  $COMMANDS = <<-'BLOCK'
+  sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+  sudo systemctl restart sshd;
+  sudo yum update;
+  sudo yum upgrade;
+  echo "root:vagrant" | sudo chpasswd
+  BLOCK
+  client2.vm.provision "shell", inline: $COMMANDS
+  end
+
+
+  config.vm.define "client3" do |client3|
+    client3.vm.box = "generic/centos8"
+    client3.vm.hostname = "Client3"
+    client3.vm.network :private_network, ip: "192.168.10.62"
+    client3.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--name", "client3"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+  end
+  $COMMANDS = <<-'BLOCK'
+  sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+  sudo systemctl restart sshd;
+  sudo yum update;
+  sudo yum upgrade;
+  echo "root:vagrant" | sudo chpasswd
+  BLOCK
+  client3.vm.provision "shell", inline: $COMMANDS
+  end
+end
